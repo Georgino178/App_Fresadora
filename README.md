@@ -6,11 +6,12 @@ La aplicacion genera archivos `.nc` que luego pueden cargarse en el software de 
 
 ## Estado del proyecto
 
-El funcionamiento base de la aplicacion esta implementado en `app_final_dark.py`. La interfaz permite seleccionar un tipo de operacion, ingresar parametros de corte y guardar el G-code resultante en un archivo `.nc`.
+El funcionamiento base de la aplicacion esta dividido en dos capas: la interfaz grafica vive en `app_final_dark.py` y la logica de generacion de G-code vive en `gcode_generator.py`. La interfaz permite seleccionar un tipo de operacion, ingresar parametros de corte y guardar el G-code resultante en un archivo `.nc`.
 
 El repositorio tambien contiene:
 
-- `app_final_dark.py`: codigo principal de la aplicacion.
+- `app_final_dark.py`: interfaz grafica principal de la aplicacion.
+- `gcode_generator.py`: funciones puras para generar y guardar G-code.
 - `app_final_dark.spec`: configuracion usada por PyInstaller para crear un ejecutable.
 - `dist/app_final_dark.exe`: ejecutable generado previamente en Windows.
 - `build/`: archivos internos generados por PyInstaller.
@@ -187,6 +188,7 @@ python -m PyInstaller app_final_dark.spec
 - Las dimensiones estan en milimetros.
 - Las profundidades en Z deben ser negativas.
 - El paso en Z debe ser negativo.
+- El salto del barrido rectangular debe ser positivo.
 - Las velocidades `F` deben ser positivas.
 - El origen de trabajo esperado es `X0 Y0`.
 - La herramienta se eleva a `Z1` para movimientos rapidos iniciales y finales.
@@ -218,13 +220,13 @@ El G-code generado por esta aplicacion no reemplaza la revision del operador. El
 
 - La interfaz esta construida con `customtkinter`.
 - `tkinter` se usa para dialogos de archivo y mensajes.
-- No hay dependencias externas adicionales para la generacion del G-code.
+- La generacion de G-code esta separada de la interfaz en `gcode_generator.py`, lo que permite probar la logica sin abrir la aplicacion grafica.
+- No hay dependencias externas adicionales para generar el G-code.
 - El codigo escribe directamente el archivo seleccionado por el usuario.
 - El proyecto no requiere conexion a internet para ejecutarse, salvo para instalar paquetes inicialmente.
 
 ## Posibles mejoras futuras
 
-- Separar la logica de generacion de G-code de la interfaz grafica.
 - Agregar pruebas automaticas para validar salidas G-code.
 - Incluir previsualizacion de trayectoria.
 - Permitir configurar RPM del husillo desde la interfaz.
