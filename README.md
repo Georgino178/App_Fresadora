@@ -173,6 +173,29 @@ python -m PyInstaller app_final_dark.spec
 
 > Importante: PyInstaller genera ejecutables para el sistema operativo donde se ejecuta. Para generar un `.exe`, debe correrse en Windows. Para generar una app/binario de macOS, debe correrse en macOS.
 
+## Pruebas automaticas
+
+La logica de generacion de G-code esta separada de la interfaz grafica, por lo que puede probarse sin abrir ventanas. Las pruebas estan en `tests/test_gcode_generator.py` y validan:
+
+- Estructura basica del programa generado.
+- Presencia de comandos CNC esperados como `S12000 M03`, `G21`, `G90` y `M30`.
+- Movimientos principales de corte en X, Y y barrido rectangular.
+- Compensacion de 2 mm en el corte lateral para rectangulo.
+- Rechazo de parametros invalidos como profundidad positiva, paso Z positivo y salto igual a cero.
+- Escritura del archivo `.nc`.
+
+Instalar dependencias de desarrollo:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+Ejecutar pruebas:
+
+```bash
+python -m pytest
+```
+
 ## Uso recomendado
 
 1. Abrir la aplicacion.
@@ -227,7 +250,6 @@ El G-code generado por esta aplicacion no reemplaza la revision del operador. El
 
 ## Posibles mejoras futuras
 
-- Agregar pruebas automaticas para validar salidas G-code.
 - Incluir previsualizacion de trayectoria.
 - Permitir configurar RPM del husillo desde la interfaz.
 - Permitir configurar altura segura en Z.
